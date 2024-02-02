@@ -1,0 +1,38 @@
+<!--
+  ~ Copyright (c) 2024.
+  ~ Created by Mykhailo Kovalenko
+  -->
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Search</title>
+</head>
+<body>
+<form th:method="get" th:action="@{/books/search}">
+    <label for="search_for">Search for: </label>
+    <input type="text" id="search_for" name="search_for" style="width: 300px;"/>
+    <br/>
+    <input type="submit" value="Search">
+</form>
+<br>
+<div th:if="${isSearched}">
+    <div th:if="${!searchResults.isEmpty()}" th:each="book : ${searchResults}">
+        <a th:href="@{/books/{id}(id=${book.getId()})}"
+           th:text="${book.getTitle()} + ', ' + ${book.getAuthor()} + ', ' + ${book.getYear()}">book</a>
+        <a th:if="${book.getOwner()}">taken by: </a>
+        <a th:if="${book.getOwner()}" th:href="@{/people/{id}(id=${book.getOwner().getId()})}"
+           th:text="${book.getOwner().getName()}"></a>
+        <br>
+    </div>
+    <div th:if="${searchResults.isEmpty()}">
+        <b>No results</b>
+    </div>
+</div>
+<hr>
+<form th:action="@{/books}" method="get">
+    <button type="submit">Back to catalogue</button>
+</form>
+</body>
+</html>

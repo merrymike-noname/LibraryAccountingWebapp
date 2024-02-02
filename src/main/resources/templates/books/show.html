@@ -1,0 +1,45 @@
+<!--
+  ~ Copyright (c) 2024.
+  ~ Created by Mykhailo Kovalenko
+  -->
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Book</title>
+</head>
+<body>
+<a th:text="${book.getTitle()} + ', ' + ${book.getAuthor()} + ', ' + ${book.getYear()}"></a>
+
+<div th:if="${owner == null}">
+    <br>
+    <a>This book is not taken by anyone. Do you want to set owner?</a>
+    <form th:method="patch" th:action="@{/books/{id}/setOwner(id=${book.getId()})}">
+        <label for="newOwner">Select new owner: </label>
+        <select th:object="${newOwner}" th:field="*{id}" id="newOwner">
+            <option th:each="person : ${people}" th:value="${person.getId()}"
+                    th:text="${person.getName()}"></option>
+        </select>
+        <input type="submit" value="Select">
+    </form>
+</div>
+
+<div th:if="${owner != null}">
+    <hr>
+    <a>This book is taken by: </a>
+    <a th:text="${owner.getName()}" th:href="@{/people/{id}(id=${owner.getId()})}"></a>
+    <form th:method="patch" th:action="@{/books/{id}/unsetOwner(id=${book.getId()})}">
+        <input type="submit" value="Unset owner">
+    </form>
+</div>
+
+<hr>
+<form th:action="@{/books/{id}/edit(id=${book.getId()})}" th:method="get">
+    <input type="submit" value="Edit">
+</form>
+<form th:method="DELETE" th:action="@{/books/{id}(id=${book.getId()})}">
+    <input type="submit" value="Delete">
+</form>
+</body>
+</html>

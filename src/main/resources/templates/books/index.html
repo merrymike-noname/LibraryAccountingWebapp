@@ -1,0 +1,59 @@
+<!--
+  ~ Copyright (c) 2024.
+  ~ Created by Mykhailo Kovalenko
+  -->
+<style>
+    .active {
+        font-weight: bold;
+    }
+</style>
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>All books</title>
+</head>
+<body>
+<b>All books:</b>
+<br>
+<div th:each="book : ${bookPage}">
+    <a th:href="@{/books/{id}(id=${book.getId()})}"
+    th:text="${book.getTitle()} + ', ' + ${book.getAuthor()} + ', ' + ${book.getYear()}">book</a>
+</div>
+<hr>
+<form method="get" th:action="@{/books}">
+
+    <div th:if="${bookPage.totalPages > 0}" style="display: flex;">
+        <a th:each="pageNumber : ${pageNumbers}"
+           th:href="@{/books(page=${pageNumber}, books_per_page=${bookPage.size}, sort_by=${selectedSort})}"
+           th:text="${pageNumber}"
+           th:class="${pageNumber==bookPage.number + 1} ? 'active' : ''"
+           style="margin-right: 5px;"></a>
+    </div>
+    <br>
+
+    <label for="booksPerPage">Books per page:</label>
+    <input type="number" min="1" id="booksPerPage" name="books_per_page" th:value="${booksPerPage}" style="width: 50px;"/>
+    <br>
+
+    <label for="sort_by">Sort by:</label>
+    <select id="sort_by" name="sort_by">
+        <option th:each="option : ${sortOptions}" th:value="${option}"
+                th:text="${option}" th:selected="${option == selectedSort}"></option>
+    </select>
+    <br>
+
+    <button type="submit">Apply</button>
+</form>
+<hr>
+<form th:action="@{/books/new}" method="get">
+    <button type="submit">Add book</button>
+</form>
+<form th:action="@{/books/search}" method="get">
+    <button type="submit">Search for a book</button>
+</form>
+<hr>
+<a th:href="@{/people}">Go to customer section</a>
+</body>
+</html>

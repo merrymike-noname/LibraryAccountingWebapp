@@ -1,0 +1,27 @@
+<!--
+  ~ Copyright (c) 2024.
+  ~ Created by Mykhailo Kovalenko
+  -->
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit user</title>
+</head>
+<body>
+<form th:method="patch" th:action="@{/people/{id}(id=${person.getId()})}" th:object="${person}">
+    <label for="name">Full name: </label>
+    <input type="text" th:field="*{name}" id="name" style="width: 300px;"/>
+    <div style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+    <br/>
+
+    <label for="birthDate">Birthdate (dd/mm/yyyy): </label>
+    <input type="text" th:field="*{birthDate}" id="birthDate" style="width: 100px;"/>
+    <div style="color: red" th:if="${#fields.hasErrors('birthDate')}" th:errors="*{birthDate}"></div>
+    <br/>
+
+    <input type="submit" value="Edit user">
+</form>
+</body>
+</html>

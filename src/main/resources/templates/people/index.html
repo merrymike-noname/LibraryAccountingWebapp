@@ -1,0 +1,24 @@
+<!--
+  ~ Copyright (c) 2024.
+  ~ Created by Mykhailo Kovalenko
+  -->
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>All users</title>
+</head>
+<body>
+<div th:each="person : ${people}">
+    <a th:href="@{/people/{id}(id=${person.getId()})}"
+    th:text="${person.getName()} + ', ' + ${person.getBirthDate()}">user</a>
+</div>
+<hr>
+<form th:action="@{/people/new}" method="get">
+    <button type="submit">Add customer</button>
+</form>
+<hr>
+<a th:href="@{/books}">Go to books section</a>
+</body>
+</html>
