@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import org.merrymike.soft.LibraryAccountingWebappBoot.models.Book;
 import org.merrymike.soft.LibraryAccountingWebappBoot.models.Person;
 import org.merrymike.soft.LibraryAccountingWebappBoot.services.BookService;
+import org.merrymike.soft.LibraryAccountingWebappBoot.services.PersonService;
 import org.merrymike.soft.LibraryAccountingWebappBoot.util.BookValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,11 +24,13 @@ import java.util.List;
 @RequestMapping("/books")
 public class BooksController {
     private final BookService bookService;
+    private final PersonService personService;
     private final BookValidator bookValidator;
 
     @Autowired
-    public BooksController(BookService bookService, BookValidator bookValidator) {
+    public BooksController(BookService bookService, PersonService personService, BookValidator bookValidator) {
         this.bookService = bookService;
+        this.personService = personService;
         this.bookValidator = bookValidator;
     }
 
@@ -52,9 +55,10 @@ public class BooksController {
 
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model, @ModelAttribute("newOwner") Person person) {
-        model.addAttribute("book", bookService.findById(id));
-        model.addAttribute("owner", bookService.getOwner(id));
-        model.addAttribute("people", bookService.getAllPeople());
+        Book book = bookService.findById(id);
+        model.addAttribute("book", book);
+        model.addAttribute("owner", book.getOwner());
+        model.addAttribute("people", personService.findAll());
         return "books/show";
     }
 

@@ -7,7 +7,6 @@ package org.merrymike.soft.LibraryAccountingWebappBoot.services;
 import org.merrymike.soft.LibraryAccountingWebappBoot.models.Book;
 import org.merrymike.soft.LibraryAccountingWebappBoot.models.Person;
 import org.merrymike.soft.LibraryAccountingWebappBoot.repositories.BookRepository;
-import org.merrymike.soft.LibraryAccountingWebappBoot.repositories.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,12 +25,10 @@ import java.util.stream.IntStream;
 @Transactional
 public class BookService {
     private final BookRepository bookRepository;
-    private final PersonRepository personRepository;
 
     @Autowired
-    public BookService(BookRepository bookRepository, PersonRepository personRepository) {
+    public BookService(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
-        this.personRepository = personRepository;
     }
 
     public Page<Book> findAll(int page, int booksPerPage, String sortBy) {
@@ -67,9 +64,6 @@ public class BookService {
         return bookRepository.findById(id).map(Book::getOwner).orElse(null);
     }
 
-    public List<Person> getAllPeople() {
-        return personRepository.findAll();
-    }
 
     public void setOwner(int id, Person owner) {
         if (bookRepository.findById(id).isPresent()) {

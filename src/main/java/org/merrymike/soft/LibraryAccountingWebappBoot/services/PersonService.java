@@ -33,6 +33,10 @@ public class PersonService {
         return personRepository.findAll(PageRequest.of(pageId, itemsPerPage)).getContent();
     }
 
+    public List<Person> findAll() {
+        return personRepository.findAll();
+    }
+
     public Person findById(int id) {
         Optional<Person> foundPerson = personRepository.findById(id);
         return foundPerson.orElse(null);
